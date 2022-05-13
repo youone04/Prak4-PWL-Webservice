@@ -5,14 +5,19 @@ const useStyles = createUseStyles({
   card: {
     border: "none",
     textAlign: "center",
+    backgroundImage: `url(${"https://t4.ftcdn.net/jpg/03/59/07/23/360_F_359072340_HwqxP1l6REvZM9a1vd22xLFj0MKYsjd0.jpg"})`,
+    backgroundRepeat:'no-repeat',
+    backgroundSize:'cover'
+
   },
   cardBody: {
     borderRadius: "0 0 50% 50%",
     fontWeight: "bold",
+  
   },
   cardImage: {
     width: "10%",
-    borderRadius: "10%",
+    borderRadius: "50%",
   },
   col: {
     display: "block",
@@ -56,7 +61,7 @@ const Cards = (props) => {
           data-aos-delay="100"
           data-aos-anchor=".example-selector"
         >
-         {props.data.username}
+         {props.data?.username}
         </Card.Title>
         <Col
           className={classes.col}
@@ -65,7 +70,7 @@ const Cards = (props) => {
           data-aos-delay="100"
           data-aos-anchor=".example-selector"
         >
-          {props.data.text}
+          {props.data?.text}
         </Col>
 
         <Row className={classes.row}>
@@ -81,7 +86,7 @@ const Cards = (props) => {
             variant="outline-primary"
             className={classes.btnCv}
           >
-              {props.data.text_cv}
+              {props.data?.text_cv}
           </Button>{" "}
           <Button
             onClick={() =>
@@ -95,7 +100,7 @@ const Cards = (props) => {
             variant="outline-secondary"
             className={classes.btnGithub}
           >
-            {props.data.text_github}
+            {props.data?.text_github}
           </Button>
         </Row>
       </Card.Body>

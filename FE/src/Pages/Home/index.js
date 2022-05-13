@@ -12,6 +12,18 @@ const Home = () => {
     error: null,
   });
 
+  const [keahlian, setKeahlian] = useState({
+    data: [],
+    loading: true,
+    error: null,
+  });
+
+  const [project, setProject] = useState({
+    data: [],
+    loading: true,
+    error: null,
+  });
+
   const getDataProfile = async () => {
     try {
       const data = await fetch(`${process.env.REACT_APP_API}/api/profile`, {
@@ -23,7 +35,7 @@ const Home = () => {
       const hasil = await data.json();
       setData({
         ...data,
-        data: hasil,
+        data: hasil.data,
         loading: false,
         error: null,
       });
@@ -40,28 +52,86 @@ const Home = () => {
     }
   };
 
+ const getDataKeahlian = async () => {
+    try {
+      const data = await fetch(`${process.env.REACT_APP_API}/api/keahlian`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      const hasil = await data.json();
+      setKeahlian({
+        ...data,
+        data: hasil.data,
+        loading: false,
+        error: null,
+      });
+    } catch (error) {
+      setKeahlian({
+        ...data,
+        data: [],
+        loading: false,
+        error:
+          error.response && error.response.data.message
+            ? error.response.data.message
+            : error.message,
+      });
+    }
+  };
+
+  const getDataProject = async () => {
+    try {
+      const data = await fetch(`${process.env.REACT_APP_API}/api/project`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      const hasil = await data.json();
+      setProject({
+        ...data,
+        data: hasil.data,
+        loading: false,
+        error: null,
+      });
+    } catch (error) {
+      setProject({
+        ...data,
+        data: [],
+        loading: false,
+        error:
+          error.response && error.response.data.message
+            ? error.response.data.message
+            : error.message,
+      });
+    }
+  };
+
   useEffect(() => {
     getDataProfile();
+    getDataKeahlian();
+    getDataProject();
   }, []);
 
   return (
     <>
-      {data.loading ? (
+      {data.loading || keahlian.loading || project.loading ? (
         <center>
           <div className="spinner-grow text-primary" role="status">
             <span className="sr-only">Loading...</span>:
           </div>
         </center>
-      ) : data.error ? (
+      ) : data.error || keahlian.error || project.error ? (
         <div className="alert alert-danger text-center" role="alert">
-          {data.error}
+          {data.error || keahlian.error || project.error}
         </div>
       ) : (
         <div>
           <NavbarTop />
-          <Cards data={data.data.data}/>
-          <Keahlian />
-          <Project />
+          <Cards data={data.data}/>
+          <Keahlian data={keahlian.data} />
+          <Project data={project.data} />
           <Footer />
         </div>
       )}
